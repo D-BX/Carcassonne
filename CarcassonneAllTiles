@@ -1,0 +1,118 @@
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+public class CarcassonneAllTiles {
+	private CarcassonneTile array[];
+ public CarcassonneAllTiles() {
+	try {
+		array = new CarcassonneTile[]{
+				new CarcassonneTile("1A", 'F', 'F', 'F', 'F', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1A.PNG"))),
+				new CarcassonneTile("1A", 'F', 'F', 'F', 'F', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1A.PNG"))),
+				new CarcassonneTile("1B", 'F', 'F', 'F', 'R', 'R', 'R', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1B.PNG"))),
+				new CarcassonneTile("1C", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1C.PNG"))),
+				new CarcassonneTile("1D", 'F', 'F', 'F', 'R', 'R', 'C', 'F','R'	,'F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1D.PNG"))),
+				new CarcassonneTile("1E", 'F', 'F', 'F', 'C', 'C', 'C', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1E.PNG"))),
+				new CarcassonneTile("1F", 'F', 'F', 'F', 'C', 'C', 'C', 'C','C','S', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1F.PNG"))),
+				new CarcassonneTile("1G", 'F', 'F', 'F', 'C', 'F', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1G.PNG"))),
+				new CarcassonneTile("1H", 'F', 'F', 'F', 'F', 'M', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1H.PNG"))),
+				new CarcassonneTile("1I", 'F', 'F', 'F', 'F', 'M', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1I.PNG"))),
+				new CarcassonneTile("1J", 'F', 'F', 'F', 'F', 'F', 'C', 'F','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1J.PNG"))),
+				new CarcassonneTile("1K", 'F', 'F', 'F', 'C', 'C', 'C', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1K.PNG"))),		
+				new CarcassonneTile("1L", 'F', 'F', 'F', 'C', 'F', 'F', 'C','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/1L.PNG"))),
+
+				new CarcassonneTile("2A", 'F', 'R', 'F', 'F', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2A.PNG"))),
+				new CarcassonneTile("2B", 'F', 'C', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2B.PNG"))),
+				new CarcassonneTile("2C", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2C.PNG"))),
+				new CarcassonneTile("2D", 'F', 'R', 'F', 'R', 'R', 'R', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2D.PNG"))),
+				new CarcassonneTile("2E", 'F', 'C', 'C', 'R', 'F', 'C', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2E.PNG"))),
+				new CarcassonneTile("2F", 'C', 'C', 'F', 'C', 'F', 'F', 'C','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2F.PNG"))),
+				new CarcassonneTile("2G", 'F', 'F', 'F', 'F', 'F', 'C', 'F','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2G.PNG"))),
+				new CarcassonneTile("2H", 'F', 'F', 'F', 'C', 'F', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2H.PNG"))),
+				new CarcassonneTile("2I", 'F', 'F', 'F', 'C', 'F', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2I.PNG"))),
+				new CarcassonneTile("2J", 'F', 'C', 'C', 'R', 'F', 'C', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2J.PNG"))),
+				new CarcassonneTile("2K", 'C', 'C', 'C', 'C', 'C', 'C', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2K.PNG"))),
+				new CarcassonneTile("2L", 'F', 'C', 'F', 'C', 'F', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/2L.PNG"))),
+
+				new CarcassonneTile("3A", 'F', 'R', 'F', 'F', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3A.PNG"))),
+				new CarcassonneTile("3B", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3B.PNG"))),
+				new CarcassonneTile("3C", 'F', 'F', 'F', 'R', 'R', 'F', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3C.PNG"))),
+				new CarcassonneTile("3D", 'F', 'C', 'C', 'F', 'C', 'C', 'F','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3D.PNG"))),	
+				new CarcassonneTile("3E", 'F', 'R', 'F', 'C', 'F', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3E.PNG"))),
+				new CarcassonneTile("3F", 'F', 'F', 'F', 'R', 'F', 'C', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3F.PNG"))),
+				new CarcassonneTile("3G", 'S', 'C', 'C', 'C', 'C', 'C', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3G.PNG"))),
+				new CarcassonneTile("3H", 'F', 'F', 'F', 'C', 'F', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3H.PNG"))),
+				new CarcassonneTile("3I", 'F', 'R', 'F', 'F', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3I.PNG"))),
+				new CarcassonneTile("3J", 'F', 'R', 'F', 'R', 'F', 'C', 'F','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3J.PNG"))),
+				new CarcassonneTile("3K", 'C', 'C', 'C', 'C', 'C', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3K.PNG"))),
+                new CarcassonneTile("3L", 'F', 'F', 'F', 'C', 'F', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/3L.PNG"))),
+
+				new CarcassonneTile("4A", 'F', 'F', 'F', 'F', 'V', 'V', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4A.PNG"))),
+				new CarcassonneTile("4B", 'F', 'F', 'F', 'V', 'W', 'V', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4B.PNG"))),
+				new CarcassonneTile("4C", 'F', 'R', 'F', 'V', 'R', 'V', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4C.PNG"))),
+				new CarcassonneTile("4D", 'F', 'C', 'C', 'V', 'V', 'C', 'F','V','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4D.PNG"))),	
+				new CarcassonneTile("4E", 'F', 'F', 'F', 'C', 'F', 'F', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4E.PNG"))),
+				new CarcassonneTile("4F", 'F', 'R', 'F', 'F', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4F.PNG"))),
+				new CarcassonneTile("4G", 'F', 'R', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4G.PNG"))),
+				new CarcassonneTile("4H", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4H.PNG"))),
+				new CarcassonneTile("4I", 'F', 'R', 'F', 'F', 'R', 'R', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4I.PNG"))),
+				new CarcassonneTile("4J", 'F', 'C', 'C', 'R', 'F', 'F', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4J.PNG"))),
+				new CarcassonneTile("4K", 'F', 'R', 'F', 'C', 'F', 'R', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4K.PNG"))),
+                new CarcassonneTile("4L", 'F', 'F', 'F', 'R', 'R', 'F', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/4L.PNG"))),
+
+				new CarcassonneTile("5A", 'F', 'F', 'F', 'F', 'V', 'V', 'F','V','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5A.PNG"))),
+				new CarcassonneTile("5B", 'F', 'R', 'F', 'V', 'K', 'V', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5B.PNG"))),
+				new CarcassonneTile("5C", 'F', 'C', 'F', 'V', 'V', 'V', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5C.PNG"))),
+				new CarcassonneTile("5D", 'F', 'V', 'F', 'V', 'F', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5D.PNG"))),
+				new CarcassonneTile("5E", 'F', 'C', 'C', 'R', 'C', 'C', 'F','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5E.PNG"))),
+				new CarcassonneTile("5F", 'F', 'F', 'F', 'C', 'F', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5F.PNG"))),
+				new CarcassonneTile("5G", 'F', 'F', 'F', 'C', 'F', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5G.PNG"))),
+				new CarcassonneTile("5H", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5H.PNG"))),
+				new CarcassonneTile("5I", 'F', 'C', 'F', 'R', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5I.PNG"))),
+				new CarcassonneTile("5J", 'F', 'R', 'F', 'R', 'R', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5J.PNG"))),
+				new CarcassonneTile("5K", 'C', 'C', 'C', 'F', 'F', 'F', 'C','C','C', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5K.PNG"))),
+                new CarcassonneTile("5L", 'F', 'R', 'F', 'F', 'R', 'F', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/5L.PNG"))),
+
+				new CarcassonneTile("6A", 'F', 'V', 'F', 'F', 'V', 'F', 'F','V','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6A.PNG"))),
+				new CarcassonneTile("6B", 'F', 'R', 'F', 'F', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6B.PNG"))),
+				new CarcassonneTile("6C", 'F', 'C', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6C.PNG"))),
+				new CarcassonneTile("6D", 'F', 'R', 'F', 'R', 'F', 'C', 'F','C','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6D.PNG"))),
+				new CarcassonneTile("6E", 'S', 'C', 'F', 'C', 'F', 'F', 'C','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6E.PNG"))),
+				new CarcassonneTile("6F", 'F', 'F', 'F', 'F', 'M', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6F.PNG"))),
+				new CarcassonneTile("6G", 'F', 'R', 'F', 'F', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6G.PNG"))),
+				new CarcassonneTile("6H", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6H.PNG"))),
+				new CarcassonneTile("6I", 'F', 'R', 'F', 'R', 'R', 'R', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6I.PNG"))),
+				new CarcassonneTile("6J", 'F', 'F', 'F', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6J.PNG"))),
+				new CarcassonneTile("6K", 'C', 'C', 'C', 'R', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6K.PNG"))),
+                new CarcassonneTile("6L", 'F', 'R', 'F', 'R', 'R', 'F', 'F','R','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6L.PNG"))),
+
+				new CarcassonneTile("7A", 'F', 'V', 'F', 'F', 'F', 'V', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7A.PNG"))),
+				new CarcassonneTile("7B", 'F', 'F', 'F', 'V', 'V', 'V', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7B.PNG"))),	
+				new CarcassonneTile("7C", 'F', 'F', 'F', 'V', 'V', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7C.PNG"))),
+				new CarcassonneTile("7D", 'F', 'F', 'F', 'V', 'V', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7D.PNG"))),
+				new CarcassonneTile("7E", 'C', 'C', 'C', 'C', 'C', 'S', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7E.PNG"))),
+				new CarcassonneTile("7F", 'C', 'C', 'C', 'C', 'C', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7F.PNG"))),
+				new CarcassonneTile("7G", 'F', 'F', 'F', 'C', 'C', 'C', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7G.PNG"))),
+				new CarcassonneTile("7H", 'F', 'F', 'F', 'C', 'F', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7H.PNG"))),
+				new CarcassonneTile("7I", 'F', 'R', 'F', 'F', 'R', 'R', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7I.PNG"))),
+				new CarcassonneTile("7J", 'F', 'F', 'F', 'R', 'R', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7J.PNG"))),
+				new CarcassonneTile("7K", 'F', 'F', 'F', 'F', 'M', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/7K.PNG"))),
+                new CarcassonneTile("7L", 'F', 'R', 'F', 'F', 'R', 'F', 'F','F','F', ImageIO.read(CarcassonneAllTiles.class.getResource("/images/6L.PNG"))),
+
+		};
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		System.out.println("Whoops");
+	}	 
+ }
+ public ArrayList<CarcassonneTile> getList(){
+	 ArrayList<CarcassonneTile> x = new ArrayList<>();
+	 for(int i =0; i < array.length;i++) {
+		 x.add(array[i]);
+	 }
+	 return x;
+ }
+	 
+ 
+}

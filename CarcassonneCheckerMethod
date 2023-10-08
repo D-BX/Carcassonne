@@ -1,0 +1,20 @@
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+
+public class BoardChecker 
+{
+	public static void main(String args[])
+	{
+		CarcassonneBoard board = new CarcassonneBoard();
+		CarcassonneAllTiles tiles = new CarcassonneAllTiles();
+		ArrayList<CarcassonneTile> tile = tiles.getList();
+
+		CarcassonneJFrame ui = new CarcassonneJFrame("Test #1");
+		
+		for(int i = 0; i < 4; i++)
+		{board.setTile(tile.get(i), i*100, 0, 1);}
+		
+		BufferedImage image = board.getImage();
+	}
+}

@@ -1,0 +1,28 @@
+import java.awt.Color;
+import java.util.ArrayList;
+
+public class CarcassonnePlayer {
+	private String name;
+	private Color myColor;
+	private ArrayList<CarcassonneTile> tiles = new ArrayList<>();
+	public int meepleCounter=7;
+	public CarcassonnePlayer(String n, Color x) {
+		name = n;
+		myColor = x;
+	}
+	public Color getColor() {
+		return myColor;
+	}
+	public String getName() {
+		return name;
+	}
+	public void addTile(CarcassonneTile x) {
+		tiles.add(x);
+	}
+	public ArrayList<CarcassonneTile> getTiles(){
+		return tiles;
+	}
+	public void meepleDown(){
+		meepleCounter--;
+	}
+}

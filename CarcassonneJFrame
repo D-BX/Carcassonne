@@ -1,0 +1,15 @@
+import javax.swing.JFrame;
+
+public class CarcassonneJFrame extends JFrame{
+	private static int height = 1200;
+	private static int width = 1500;
+	public CarcassonneJFrame(String framename) {
+		super(framename);
+		setSize(width, height);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		CarcassonneGraphics p = new CarcassonneGraphics();
+		add(p);
+		setVisible(true);
+
+}
+}

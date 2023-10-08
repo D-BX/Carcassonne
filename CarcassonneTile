@@ -1,0 +1,309 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+
+enum TerrainType {
+		Farmland, monastery, river, city, road, cityshield, monasteryriver, roadmonastery;
+		
+	};
+public class CarcassonneTile {
+	private TerrainType[][] tr  = new TerrainType[3][3];
+	private int[][] meeples = {{0,0,0},{0,0,0},{0,0,0}};
+	private BufferedImage img;
+	private String identifier = "";
+	private CarcassonnePlayer tilePlayer;
+	private Point coordinates;
+	private int size = 64;
+	private int xr;
+	private int yr;
+	public CarcassonneTile(String letter, char topL, char topM, char topR, char midL, char midM, char midR, char botL, char botM, char botR, BufferedImage image) {
+		identifier += letter;
+		addTerrain(topL, 0,0);
+		addTerrain(topM, 0,1);
+		addTerrain(topR, 0,2);
+		addTerrain(midL, 1,0);
+		addTerrain(midM, 1,1);
+		addTerrain(midR, 1,2);
+		addTerrain(botL, 2,0);
+		addTerrain(botM, 2,1);
+		addTerrain(botR, 2,2);
+		img = image;
+	}
+	public void setTilePlayer(CarcassonnePlayer x){
+		tilePlayer = x;
+	}
+
+	public boolean equalsToCheck(CarcassonneTile x, int position) {
+		//int position is refrencing the possition of the tile you want to check relative to this tile
+		//eg 0 is to the left, 1 is above the tile, 2 is to the right, and 3 is bellow.
+		//eg 0 above the tile, 1 is to the right, 2 is bellow and 3 is to the left
+		//System.out.println(this.getType(1, 0)+" "+x.getType(1, 2));
+			if(position == 0) {
+				if(this.getType(0, 1)==x.getType(2, 1)) {
+					return true;
+				}
+				return false;
+			}
+			else if(position == 1) {
+				if(this.getType(1, 2)==x.getType(1, 0)) {
+					return true;
+				}
+				return false;
+			}else if(position == 2) {
+				if(this.getType(2, 1)==x.getType(0, 1)) {
+					return true;
+				}
+				return false;
+			}else if(position == 3) {
+				if(this.getType(1, 0)==x.getType(1, 2)) {
+					return true;
+				}
+				}
+			
+				return false;		
+}
+	
+	public TerrainType getType(int x ,int y) {
+		if(tr[x][y]==TerrainType.cityshield) {//shield is +2 points
+			return TerrainType.city;
+		}
+		else {
+		return tr[x][y];
+		}
+	}
+	public TerrainType getTypeNotCheck(int x,int y) {
+		return tr[x][y];
+	}
+	public void addTerrain(char l, int x, int y){
+			if(l=='F') {
+				tr[x][y] = TerrainType.Farmland;
+			}else if(l=='M') {
+				tr[x][y] = TerrainType.monastery;
+			}else if(l=='R') {
+				tr[x][y] = TerrainType.road;
+			}else if(l=='V') {
+				tr[x][y]= TerrainType.river;
+			}else if(l=='S') {
+				tr[x][y]= TerrainType.cityshield;
+			}else if(l=='C') {
+				tr[x][y] = TerrainType.city;
+			}else if(l=='W') {
+				tr[x][y] = TerrainType.monasteryriver;
+			}else if(l=='K') {
+				tr[x][y] = TerrainType.roadmonastery;
+			}
+	}
+	public BufferedImage getImageResized(double scaleFactor) {
+		return resize(img,75 *(int)scaleFactor, 75*(int)scaleFactor);
+	}
+	public static BufferedImage resize(BufferedImage img1, int newW, int newH) { 
+	    Image tmp = img1.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+	    BufferedImage dimg1 = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg1.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg1;
+	}
+	public void rotate() {
+		//TerrainType[][] temp = tr;
+		/*temp[0][0] = tr[2][0];
+		temp[0][1] = tr[1][0];
+		temp[0][2] = tr[0][0];
+		temp[1][2] = tr[0][1];
+		temp[2][2] = tr[0][2];
+		temp[2][1] = tr[1][2];
+		temp[2][0] = tr[2][2];
+		temp[1][0] = tr[2][1];*/
+		int sizeCounter = 3;
+		for (int i = 0; i < sizeCounter / 2; i++)
+	    {
+	        for (int j = i; j < sizeCounter - i - 1; j++)
+	        {
+	            TerrainType temp = tr[i][j];
+	            tr[i][j] = tr[sizeCounter - 1 - j][i];
+	            tr[sizeCounter - 1 - j][i] = tr[sizeCounter - 1 - i][sizeCounter - 1 - j];
+	            tr[sizeCounter - 1 - i][sizeCounter - 1 - j] = tr[j][sizeCounter - 1 - i];
+	            tr[j][sizeCounter - 1 - i] = temp;
+	        }
+	    }  
+		/*for(int r = 0; r < 3/2; r++){
+            for(int c = r; c < 2 - r; c++){
+                TerrainType temp = tr[r][c];
+                tr[r][c] = tr[c][2 - r];
+                tr[c][3 - (r + 1)] = tr[2 - r][2 - c];
+                tr[2 - r][2 - c] = tr[2 - c][r];
+                tr[2 - c][r] = temp;
+            }
+        }*/
+		System.out.println("ROTATED TERRAINS" + getTerrainstoString());
+		img = rotate(img, 90);
+	}
+	public TerrainType[][] getTerrains(){
+		return tr;
+	}
+	public String getTerrainstoString() {
+		return tr[0][0].toString()+" "+tr[0][1].toString()+" "+tr[0][2].toString()+" "+tr[1][0].toString()+" "+tr[1][1].toString()+" "+tr[1][2].toString()+" "+tr[2][0].toString()+" "+tr[2][1].toString()+" "+tr[2][2].toString();
+	}
+	
+	public BufferedImage rotate(BufferedImage img1, double angle) {
+
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img1.getWidth();
+        int h = img1.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(img1, 0, 0, null);
+        g2d.setColor(Color.RED);
+        g2d.drawRect(0, 0, newWidth - 1, newHeight - 1);
+        g2d.dispose();
+
+        return rotated;
+    }
+	public void placeMeeple(int x, int y) {
+		meeples[x][y]++;
+	}
+	public int[] getMeeplelocation() {
+		for(int i =0; i < 3;i++) {
+			for(int j =0; j<3;j++) {
+				if(meeples[i][j]==1) {
+					int[] arr = {i,j};
+					return arr;
+				}
+			}
+		}
+		return null;
+	}
+public BufferedImage getImage() {
+		BufferedImage r = resize(img, size, size);
+		if(meeples[0][0]==0&&meeples[0][1]==0&&meeples[0][2]==0&&meeples[1][0]==0&&meeples[1][1]==0&&meeples[1][2]==0&&meeples[2][0]==0&&meeples[2][1]==0&&meeples[2][2]==0) {
+			img = resize(img, size, size);
+			return r;
+		
+		}else {
+			img = resize(img, size, size);
+			int[] arr = getMeeplelocation();
+			int x = arr[0];
+			int y = arr[1];
+			int width = r.getWidth();
+			int height = r.getHeight();
+		    Graphics2D g = (Graphics2D) r.getGraphics();
+		    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		    g.setColor(tilePlayer.getColor());
+		    x ++;
+		    y ++;
+		    x *=25;
+		    y*=25;
+		    x/=2;
+		    y/=2;
+		    g.drawOval(x-size/12, y-size/12, x+ size/12-3, y+ size/12-3);
+		    return r;
+		}
+}
+public String getIdentifier() {
+	return identifier;
+}
+public void setTranslatedPoint(int x, int y) {
+	/*int planeSize = 50  * size;
+	Point[][] centers = new Point[50][50];
+	centers[0][0] = new Point(size/2,size/2);
+	int counter = size/2;
+	int verticalcounter = size/2;
+	for(int i = 0; i < 50; i ++ ) {
+		for(int j = 0; j < 50; j++) {
+			if(j == 49) {
+				centers[i][j] = new Point(counter, verticalcounter);
+				counter = size/2;
+				verticalcounter+=size;
+			}else if(i == 0 & j == 0){
+				continue;
+			}else{
+				counter+= size;
+				centers[i][j] = new Point(counter, verticalcounter);
+			}
+		}
+	}
+	for(int i =0; i < centers.length;i++) {
+		for(int j = 0; j < centers.length; j ++) {
+			System.out.print(centers[i][j]);
+		}
+		System.out.println();
+	}
+	for(int i =0; i < centers.length;i++) {
+		for(int j = 0; j < centers[i].length; j++) {
+			if(( x > (centers[i][j].getX()-(size/2)) && (y > (centers[i][j].getY()-(size/2)) && x < (centers[i][j].getX()+(size/2))&& y < (centers[i][j].getY()+(size/2))))){
+				coordinates = centers[i][j];
+				xr = (int)centers[i][j].getX();
+				yr = (int)centers[i][j].getY();
+				break;
+			}
+		}
+	}*/
+	int sx = x/size;
+	int sy = y/size;
+	sx *= size;
+	sy *=size;
+	sx+= (size/2);
+	sy+= (size/2);
+	xr = sx;
+	yr = sy;
+
+}
+public int getSize() {
+	return size;
+}
+public void setPoint(int x1, int y1) {
+	coordinates = new Point(x1,y1);
+	xr = x1;
+	yr=y1;
+}
+public void scaleDown() {
+	size *= (0.5);
+	int xtemp = xr-384;
+	int ytemp = yr - 384;
+	xtemp /=2;
+	ytemp /= 2;
+	xtemp +=384;
+	ytemp +=384;
+	xr = xtemp;
+	yr = ytemp;
+	
+}
+public Point getPoint() {
+	return new Point(xr,yr);
+}
+public int[] getPointsArr() {
+	int[] arr =  {xr,yr};
+	return arr;
+}
+public double calculateDistanceBetweenPoints(
+	    double x1, 
+	    double y1, 
+	    double x2, 
+	    double y2) {
+	        
+	    double ac = Math.abs(y2 - y1);
+	    double cb = Math.abs(x2 - x1);
+	        
+	    return Math.hypot(ac, cb);
+	}
+
+}

@@ -1,0 +1,78 @@
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+public class CarcassonneGame {
+	private int playerCounter;
+	private CarcassonnePlayer[] players = new CarcassonnePlayer[4];
+	private CarcassonneTile currentTile;
+	private CarcassonneDeck deck;
+	private CarcassonneBoard board;
+	public CarcassonneGame() {
+		players[0] = new CarcassonnePlayer("Player 1" , Color.cyan);
+		players[1] = new CarcassonnePlayer("Player 2" , Color.blue);
+		players[2] = new CarcassonnePlayer("Player 3" , Color.pink);
+		players[3] = new CarcassonnePlayer("Player 4" , Color.black);
+		deck = new CarcassonneDeck();
+		deck.shuffle();
+		playerCounter = (int)(Math.random()*4);
+		board = new CarcassonneBoard();
+		currentTile = deck.getTopTile();
+		board.setTile(currentTile,416,224,0);
+		currentTile = deck.getTopTile();
+	}
+	public CarcassonneTile getDrawTile() {
+		currentTile= deck.getTopTile();
+		return currentTile;
+	}
+	public boolean simulateTilePlacement(int x, int y, CarcassonneTile placed, int meepleLoc) {
+		if(board.violates(placed, new Point(x,y))) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public boolean roundOfPlay(int x, int y, CarcassonneTile placed, int meepleLoc){
+		if(board.violates(placed, new Point(x,y))){
+			placed.setTilePlayer(players[playerCounter]);
+			board.setTile(placed, x ,y, meepleLoc);
+			if(meepleLoc!=0) {
+				players[playerCounter].meepleDown();
+			}
+			playerCounter++;
+			if(playerCounter==4) {
+				playerCounter = 0;
+			}
+			getDrawTile();
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	public void discardTile() {
+		getDrawTile();
+	}
+	public CarcassonneTile getCurrentTile() {
+		return currentTile;
+	}
+	public boolean isEndGame() {
+		if(getDeckSize()==0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public int getDeckSize() {
+		return deck.getDeckSize();
+	}
+	public CarcassonnePlayer[] getPlayers() {
+		return players;
+	}
+	public int getPlayerCounter() {
+		return playerCounter;	
+	}
+	public BufferedImage getBoardImage() {
+		return board.getImage();
+	}
+	}

@@ -1,0 +1,231 @@
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.*;
+
+public class CarcassonneBoard {
+	private ArrayList<CarcassonneTile> board;
+	private HashMap<CarcassonneTile, Point> coordinates; // Using for the connected and around
+	private ArrayList<Point[]> size=new ArrayList<>();
+	private int scaleFactor;
+	public CarcassonneBoard() {
+		board = new ArrayList<>();
+		coordinates = new HashMap<>();
+	}
+	public void setTile(CarcassonneTile toAdd, int x, int y, int meepleLoc) {
+		if(meepleLoc == 1) {
+		toAdd.placeMeeple(0,0);
+		}if(meepleLoc == 2) {
+			toAdd.placeMeeple(0,1);
+		}if(meepleLoc == 3) {
+				toAdd.placeMeeple(0,2);
+		}if(meepleLoc == 4) {
+				toAdd.placeMeeple(1,0);
+		}if(meepleLoc == 5) {
+				toAdd.placeMeeple(1,1);
+		}if(meepleLoc == 6) {
+				toAdd.placeMeeple(1,2);
+		}if(meepleLoc == 7) {
+				toAdd.placeMeeple(2,0);
+		}if(meepleLoc == 8) {
+				toAdd.placeMeeple(2,1);
+		}if(meepleLoc == 9) {
+				toAdd.placeMeeple(2,2);
+		}
+		toAdd.setTranslatedPoint(x, y);
+		board.add(toAdd);
+		coordinates.put(toAdd, toAdd.getPoint());
+	}
+	public CarcassonneTile getTile(int x, int y) {
+		CarcassonneTile getter = null;
+		for(int i =0; i < board.size();i++) {
+			if(board.get(i).getPoint()==(new Point(x,y))) {
+				return board.get(i);
+			}
+		}
+		return getter;
+	}
+	
+	public boolean violates(CarcassonneTile k, Point p)
+	{
+		k.setTranslatedPoint((int)p.getX(), (int)p.getY());
+		System.out.println("Point of tile being put:" + k.getPoint());
+		Map<CarcassonneTile, Integer> m = this.connected(k, k.getPoint());
+		List<CarcassonneTile> keys = new ArrayList<>(m.keySet());
+		int pos;
+		if(keys.size()==0) {
+			return false;
+		}
+		for(CarcassonneTile g:keys)
+		{
+			pos = m.get(g);
+			System.out.println("PLACED TILE"+ k.getTerrainstoString());
+			System.out.println("PLACED TILE IDENT" + k.getIdentifier());
+			System.out.println("CONNECTED TO " + g.getTerrainstoString());
+			System.out.println("CONNECTED IDENT" + g.getIdentifier());
+			System.out.println("POS OF CONNECTION" + pos);
+			if(!k.equalsToCheck(g, pos)) {
+			
+		//		System.out.println("YO");
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public void changeScaleFactor() {
+		scaleFactor *= (2/3);
+	}
+	
+	public void addSize(Point p1, Point p2) {
+		Point [] p=new Point [2];
+		p[0]=p1;
+		p[1]=p2;
+		size.add(p);
+	}
+	
+
+
+	public void setSize(ArrayList<Point[]> list)
+	{
+		size=list;
+	}
+	
+	public BufferedImage getImage() {
+		BufferedImage r = new BufferedImage(768, 768 ,BufferedImage.TYPE_INT_ARGB);
+		try {
+		Graphics2D g2d = r.createGraphics();
+		System.out.println(board.size()+ " SIZE ");
+		for(int i =0; i < board.size();i++) {
+			int[] getPoints = board.get(i).getPointsArr();
+			System.out.println(getPoints[0]+" "+getPoints[1]+":DRAWN POINTS");
+			g2d.drawImage(board.get(i).getImage(),getPoints[0], getPoints[1],null);
+		}
+		g2d.dispose();
+		}catch(Exception e) {
+			System.out.println(e);
+			//for(int i = 0; i < board.size();i++) {
+			//	CarcassonneTile toChange = board.remove(i);
+			//	toChange.scaleDown();
+			//	board.add(i, toChange);
+			//}
+			//r = getImage();
+		}
+		return r;
+	}
+	/*public Point getRightmost() {
+		double maxDistance = 0.0;
+		Point maxPoint = new Point();
+		for(int i = 1000; i >= 0; i++) {
+			for(int j = 1000; j >= 0; j++) {
+				double distance = Math.sqrt((double)Math.pow(i,2)+ (double)Math.pow(j,2));
+				if(board.get(new Point(i,j))!= null & distance > maxDistance) {
+					maxDistance = distance;
+					maxPoint  = new Point(i,j);
+				}
+			}
+		}
+		return maxPoint;
+	}
+	public Point getLeftmost() {
+		double maxDistance = 0.0;
+		Point maxPoint = new Point();
+		for(int i = -1000; i <= 0; i++) {
+			for(int j = -1000; j <= 0; j++) {
+				double distance = Math.sqrt((double)Math.pow(i,2)+ (double)Math.pow(j,2));
+				if(board.get(new Point(i,j))!= null & distance > maxDistance) {
+					maxDistance = distance;
+					maxPoint  = new Point(i,j);
+				}
+			}
+		}
+		return maxPoint;
+	}*/
+	public static BufferedImage resize(BufferedImage img1, int newW, int newH) { 
+	    Image tmp = img1.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+	    BufferedImage dimg1 = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg1.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg1;
+	}
+	
+	public int getWidth()
+	{
+		return 768;
+	}
+	
+	public int getHeight()
+	{
+		return 768;
+	}
+	
+	/*public void checkAround(CarcassonneTile t, Point p) //throws IOException
+	{
+		ArrayList<CarcassonneTile> list = connected(t,p);
+		//for a small test we could get the names of the tiles and print using this list
+		/// Also not sure how to check every single terrain 
+		ArrayList<String> top = new ArrayList<String>(); 
+		ArrayList<String> bot = new ArrayList<String>(); 
+		ArrayList<String> left = new ArrayList<String>(); 
+		ArrayList<String> right = new ArrayList<String>(); 
+
+		
+		for(int i = 0; i<list.size(); i++) {
+			CarcassonneTile checkT = list.get(i);
+			Point tempPt = coordinates.get(checkT.getPoint());
+			///left side
+			if(t.getTerrainstoString().equals(checkT.getTerrainstoString()) && (p.getX()== tempPt.getX()+getHeight()/3 && p.getY()== tempPt.getY()) || (p.getX()== tempPt.getX() && p.getY()== tempPt.getY()-getHeight()/3)) 
+				left.add(checkT.getTerrainstoString());
+			//below
+			else if (t.getTerrainstoString().equals(checkT.getTerrainstoString()) && (p.getX() == tempPt.getX() && p.getY() == tempPt.getY()+getHeight()*2/3) || (p.getX() == tempPt.getX()+getHeight()/3 && p.getY() == tempPt.getY()+getHeight()/3) )
+					bot.add(checkT.getTerrainstoString());
+			if(t.getTerrainstoString().equals(checkT.getTerrainstoString()) && (p.getX()== tempPt.getX()-getHeight()*2/3 && p.getY()==tempPt.getY()+getHeight()/3) || (p.getX()==tempPt.getX()-getHeight()/3 && p.getY()== tempPt.getY()+getHeight()*2/3))
+				right.add(checkT.getTerrainstoString());
+			else if (t.getTerrainstoString().equals(checkT.getTerrainstoString()) && (p.getX()==tempPt.getX()-getHeight()/3) && p.getY()==tempPt.getY()-getHeight()/3 || (p.getX()==tempPt.getX()-getHeight()*2/3 && p.getY()==tempPt.getY()))
+				top.add(checkT.getTerrainstoString());
+			}
+		
+		
+	}*/
+	
+	public HashMap<CarcassonneTile, Integer> connected(CarcassonneTile T, Point P) //throws IOException
+	{
+		HashMap<CarcassonneTile, Integer> list = new HashMap<CarcassonneTile ,Integer>();
+		
+			for(CarcassonneTile t: coordinates.keySet()) {
+				Point pt = coordinates.get(t);	
+		//		System.out.println();
+			//	System.out.println(t.getTerrainstoString());
+			//	System.out.println(pt);
+			////	System.out.println(P);
+			//	System.out.println();
+		        	//check left and right, up
+		        	if((int)P.getX()+T.getSize()==(int)pt.getX()&&(int)P.getY()==pt.getY()) {
+		        		System.out.println("CONNECTED RIGHT");
+		        		list.put(t,1);
+		        	}
+		        	//check left and right, down
+		        	if((int)P.getX()-T.getSize()==(int)pt.getX()&&(int)P.getY()==pt.getY()) {
+		        		System.out.println("CONNECTED LEFT");
+		        		list.put(t,3);
+		        	}
+		        	//check down
+		        	if((int)P.getY()-T.getSize()==(int)pt.getY()&&(int)P.getX()==pt.getX()) {
+		        		System.out.println("CONNECTED UP");
+		        		list.put(t,0);
+		        	}
+		        	//check up
+		        	if((int)P.getX()+T.getSize()==(int)pt.getY()&&(int)P.getX()==pt.getX()) {
+		        		System.out.println("CONNECTED DOWN");
+		        		list.put(t,2);
+		        	}
+		        }
+		return list;
+	}
+
+}

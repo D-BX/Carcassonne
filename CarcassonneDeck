@@ -1,0 +1,96 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class CarcassonneDeck {
+	private ArrayList<CarcassonneTile> deck;
+	private CarcassonneAllTiles x;
+public CarcassonneDeck() {	
+	x = new CarcassonneAllTiles();
+	deck = x.getList();
+}
+public void shuffle() {
+	ArrayList<CarcassonneTile> rivers = new ArrayList<>();;
+	for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("4B"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("4C"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("4D"))  {
+			rivers.add(deck.get(i));	
+			deck.remove(deck.get(i));
+
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("5D"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("5C"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("5B"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("5A"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("6A"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("7A"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("7B"))  {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}
+	Collections.shuffle(rivers);
+	Collections.shuffle(deck);
+	for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("7C")) {
+			rivers.add(deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}for(int i =0; i < deck.size();i++) {
+		if(deck.get(i).getIdentifier().equals("4A")) {
+			rivers.add(0,deck.get(i));
+			deck.remove(deck.get(i));
+		}
+	}
+	rivers.addAll(deck);
+	deck = rivers;
+	
+}
+public CarcassonneTile getTopTile() {
+	if(deck.size()>0) {
+	 return deck.remove(0);
+	}
+		return null;
+}
+public int getDeckSize() {
+	return deck.size();
+}
+public ArrayList<CarcassonneTile> getList() {
+	return deck;
+}
+}

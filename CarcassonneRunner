@@ -1,0 +1,7 @@
+
+public class CarcassonneRunner {
+public static void main(String[] args) {
+	CarcassonneJFrame x = new CarcassonneJFrame("Game User Interface");
+}
+}
+

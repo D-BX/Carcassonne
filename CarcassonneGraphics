@@ -1,0 +1,312 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+public class CarcassonneGraphics extends JPanel implements KeyListener,  MouseListener,  MouseMotionListener{
+	private boolean keychecker = false;
+	private CarcassonneGame game;
+	private int x, y, xt, yt;
+	private CarcassonneTile currentTile;
+	private boolean startChecker = true;
+	private BufferedImage background;
+	private BufferedImage numbers;
+	private BufferedImage drawnImage;
+	private BufferedImage bayeux;
+	private boolean intscheck = false;
+	private boolean illegalPlacementPainter = false;
+	private boolean tempTilePainter = false;
+	private int meepleLoc = -1;
+	public CarcassonneGraphics() {
+	    setFocusable(true);
+		requestFocus();
+		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		repaint();
+		game = new CarcassonneGame();
+		currentTile = game.getCurrentTile();	
+		try {
+			background = ImageIO.read(CarcassonneAllTiles.class.getResource("/images/CarcassonneImage.jpg"));
+			numbers = ImageIO.read(CarcassonneAllTiles.class.getResource("/images/Numbers.PNG"));
+			bayeux = ImageIO.read(CarcassonneAllTiles.class.getResource("/images/bayuex.png"));
+			drawnImage = ImageIO.read(CarcassonneAllTiles.class.getResource("/images/DrawnTileImage.PNG"));
+			
+		}catch(Exception e) {
+			System.out.println("Background not loading");
+		}
+	}
+	public void paint(Graphics g) {
+		int w = getWidth();
+		int h = getHeight();
+		g.drawImage(background, 0, 0, w, h,null);
+		if(startChecker== true) {
+			if(intscheck==true) {
+					g.drawImage(bayeux,0,0,w,h,null);
+					g.setColor(Color.yellow);
+					g.fillRect(275, 0, 800, 800);
+				    g.setColor(Color.black);
+			    	Font myFont = new Font("Times New Roman" , Font.PLAIN, 30);
+			    	g.setFont(myFont);
+			    	g.drawString("INSTRUCTIONS", 400, 50);
+			    	Font myFont1 = new Font("Baskerville Old Face" , Font.PLAIN, 15);
+			    	g.setFont(myFont1);
+			    	g.drawString("The first player to go will be selected randomly", 400,100);
+			    	g.drawString("The computer will show the tile that is drawn for the round of play on the left side", 400,150);
+			    	g.drawString("To rotate this tile, use the r-key", 400,200);
+			    	g.drawString("The white tiles on the board show possible placements, and hovering over each square will ", 400,250);
+			    	g.drawString(" indicate whether or not that is a legal placement following the rules", 400,265);
+			    	g.drawString("To place a tile, use the left mouse button to click on a white tile.", 400,300);
+			    	g.drawString("The next part is placing the meeple in the desired location", 400,350);
+			    	g.drawString("To place the meeple in the its desired location, use the grid that overlays the drawn tile plus the key below:", 400,400);
+			    	g.drawImage(numbers, 600, 450, 150, 150, null);
+			    	g.setColor(Color.pink);
+					g.fillRect(w/5, 2*h/3,200, 50 );
+			    	g.setColor(Color.black);
+					g.drawString("PLAY", w/5+30, 2*h/3+30);
+			}
+			else {
+				g.setColor(Color.pink);
+				g.fillRect(w/5, 2*h/3,200, 50 );
+				g.fillRect(2*w/3, 2*h/3,200, 50);
+				g.setColor(Color.black);
+				g.drawString("PLAY", w/5+30, 2*h/3+30);
+				Font myFont1 = new Font("Baskerville Old Face" , Font.PLAIN, 15);
+		    	g.setFont(myFont1);
+				g.drawString("INSTRUCTIONS", 2*w/3+30, 2*h/3+30);
+			}
+		}
+		else {
+	    	g.drawImage(numbers, 100, 700, 150, 150, null);
+	    	g.setColor(Color.orange);
+	    	g.fillRect(0, 0,300,160);
+	    	g.setColor(Color.black);
+	    	g.drawLine(0, 40, 300, 40);
+	    	g.drawLine(0, 80, 300, 80);
+	    	g.drawLine(0, 120, 300, 120);
+	    	g.drawLine(0, 160, 300, 160);
+	    	g.setColor(Color.pink);
+	    	if(game.getPlayers()[game.getPlayerCounter()].getName().equals("Player 1")) {
+	    		g.fillRect(0, 0, 300, 40);
+	    	}else if(game.getPlayers()[game.getPlayerCounter()].getName().equals("Player 2")) {
+	    		g.fillRect(0, 40, 300, 40);
+	    	}else if(game.getPlayers()[game.getPlayerCounter()].getName().equals("Player 3")) {
+	    		g.fillRect(0, 80, 300, 40);
+	    	}else if(game.getPlayers()[game.getPlayerCounter()].getName().equals("Player 4")) {
+	    		g.fillRect(0, 120, 300, 40);
+	    	}
+	    	g.drawImage(drawnImage,182,450,150,50, null);
+	    	g.drawImage(currentTile.getImage(),200,500,125,125,null);
+	    	g.setColor(Color.white);
+	    	g.fillRect(getWidth()-768, h-768, 768, 768);
+	    	g.drawImage(game.getBoardImage(), 664, 278, 768,768, null);
+	    	if(illegalPlacementPainter) {
+	    		g.drawString("WRONG PLACEMENT", 10, 10);//temp
+	    	}
+	    	if(tempTilePainter) {
+	    		g.setColor(Color.green);
+	    		g.fillRect(xt-currentTile.getSize()/2+768-64-6, yt-currentTile.getSize()/2+314-5, currentTile.getSize(), currentTile.getSize());
+	    	}
+		}
+	}
+	public void paintComponent() {
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if(keychecker == true) {
+			char a = arg0.getKeyChar();
+			if(a=='0') {
+				meepleLoc = 0;
+			}
+			if(a == '1') {
+				meepleLoc = 1;
+			}else if(a=='2') {
+				meepleLoc = 2;
+			}else if(a=='3') {
+				meepleLoc = 3;
+			}else if(a=='4') {
+				meepleLoc = 4;
+			}else if(a=='5') { 
+				meepleLoc = 5;
+			}else if(a=='6') {
+				meepleLoc = 6;
+			}else if(a=='7') {
+				meepleLoc = 7;
+			}else if(a=='8') {
+				meepleLoc = 8;
+			}else if(a=='9') {
+				meepleLoc = 9;
+			}
+			if(arg0.getKeyChar()=='\n'&&meepleLoc>=0&currentTile!=null&x!=0&y!=0){
+				if(game.roundOfPlay(x, y, currentTile, meepleLoc)) {
+					System.out.println("ROUND OF PLAY PASSED");
+					System.out.println();
+					currentTile = game.getCurrentTile();
+					keychecker = false;
+					illegalPlacementPainter = false;
+					tempTilePainter = false;
+					meepleLoc = -1;
+					x=0;
+					y=0;
+					repaint();
+				}
+			}
+		}else {
+			char a = arg0.getKeyChar();
+			if(a=='r') {
+				currentTile.rotate();
+				repaint();
+			}else if(a=='d') {
+				game.discardTile();
+				currentTile = game.getCurrentTile();
+				keychecker = false;
+				illegalPlacementPainter = false;
+				tempTilePainter = false;
+				meepleLoc = -1;
+				x=0;
+				y=0;
+				repaint();
+			}
+		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		if(startChecker) {
+			int xs = arg0.getX();
+			int yx = arg0.getY();
+			if(xs>(getWidth()/5)&&(yx>(getHeight()*2/3))&&(xs<(getWidth()/5+200)&&(yx<(getHeight()*2/3+50)))) {
+				startChecker = false;
+				repaint();
+			}else if(xs>(2*getWidth()/3)&&(yx>(getHeight()*2/3))&&(xs<(getWidth()*2/3+200))&&(yx<(getHeight()*2/3+50))){
+				intscheck= true;
+				repaint();
+			}	
+		}else {
+			int xs = arg0.getX();
+			int ys = arg0.getY();
+			if(xs> 664 && ys > 378 ) {
+				if(game.simulateTilePlacement(xs-664, ys-378+64, currentTile, 0)) {
+					illegalPlacementPainter = false;
+					x = xs-664;
+					y = ys-378+64;
+					CarcassonneTile temp = currentTile;
+					temp.setTranslatedPoint(x, y);
+					int[] sir = temp.getPointsArr();
+					xt = sir[0];
+					yt = sir[1];
+					keychecker = true;
+					tempTilePainter = true;
+					repaint();
+				}else {
+					System.out.println("Wrong Placement ig");
+					illegalPlacementPainter = true;
+					repaint();
+				}
+			}}
+		}
+	
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	public BufferedImage rotate(BufferedImage img, double angle) {
+
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(img, 0, 0, this);
+        g2d.setColor(Color.RED);
+        g2d.drawRect(0, 0, newWidth - 1, newHeight - 1);
+        g2d.dispose();
+
+        return rotated;
+    }
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
+	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg;
+	}
+
+
+}
