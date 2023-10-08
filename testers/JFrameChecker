@@ -1,0 +1,15 @@
+import javax.swing.JFrame;
+
+public class JFrameChecker extends JFrame{
+	private static int height = 1200;
+	private static int width = 1500;
+	public JFrameChecker(String framename) {
+		super(framename);
+		setSize(width, height);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		BoardChecker p = new BoardChecker();
+		add(p);
+		setVisible(true);
+
+}
+}

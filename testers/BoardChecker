@@ -1,0 +1,35 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import javax.swing.JPanel;
+
+public class BoardChecker extends JPanel
+{
+	CarcassonneDeck tiles = new CarcassonneDeck();
+	CarcassonneBoard board = new CarcassonneBoard();
+	public BoardChecker() {
+		setFocusable(true);
+		requestFocus();
+		repaint();
+		tiles.shuffle();
+		ArrayList<CarcassonneTile> x = tiles.getList();
+		System.out.println(x.get(0).getIdentifier());
+		board.setTile(x.get(0), 260,260, 0);
+		CarcassonneTile yes = x.get(7);
+		CarcassonnePlayer play = new CarcassonnePlayer("BO", Color.cyan);
+		yes.setTilePlayer(play);
+		board.setTile(x.get(24), 320, 260, 0);
+		board.setTile(x.get(28), 284, 320, 0);
+		System.out.println(board.violates(yes, new Point(320,320)));
+		board.setTile(yes, 320,320, 6);
+
+	}
+	public void paint(Graphics g) {
+		g.drawImage(board.getImage(), 300,300,null );
+
+	}
+	
+}

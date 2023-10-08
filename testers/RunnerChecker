@@ -1,0 +1,6 @@
+
+public class RunnerChecker {
+public static void main(String[] args) {
+	JFrameChecker x = new JFrameChecker("LOL");
+}
+}
